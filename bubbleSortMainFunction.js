@@ -1,4 +1,4 @@
-let testArr = [5,4,3,2,1];
+let testArr = Array.from({ length: 10000 }, () => Math.random());
 
 function bubbleSort_loopMethod(array, n = array.length) {
   for (let i = 0; i < n - 1; i++) {
