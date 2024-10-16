@@ -1,4 +1,8 @@
-let testArr = Array.from({ length: 10000 }, () => Math.random());
+// 随机生成长度为10的数组
+let testArr = Array.from(
+  { length: 10 },
+  () => Math.floor(Math.random() * 100) + 1
+);
 
 function bubbleSort_loopMethod(array, n = array.length) {
   for (let i = 0; i < n - 1; i++) {
@@ -35,6 +39,6 @@ function bubbleSort_recursiveMethod(array, n = array.length) {
   bubbleSort_recursiveMethod(array, n - 1);
 }
 
-// console.log(`loopMethod: ${bubbleSort_loopMethod(testArr)}`);
+console.log(`loopMethod: ${bubbleSort_loopMethod(testArr)}`);
 bubbleSort_recursiveMethod(testArr);
 console.log(`recursiveMethod: ${testArr}`);
