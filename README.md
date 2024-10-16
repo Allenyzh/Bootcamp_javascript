@@ -4,4 +4,4 @@
 
 ## Practise 1012
 
-- An animation demo of <span style="color:red"> **_bubble sort algorithm_** </span>using html css and javascript.
+- An animation demo of **_bubble sort algorithm_** using html css and javascript.
