@@ -1,8 +1,7 @@
-// 随机生成长度为10的数组
-let testArr = Array.from(
-  { length: 10 },
-  () => Math.floor(Math.random() * 100) + 1
-);
+  // 生成随机长度在3到10之间的数组
+  var arrayLength = Math.floor(Math.random() * (10 - 3 + 1)) + 3;
+  // 生成随机数组元素在1到10之间
+  var myArray = Array.from({ length: arrayLength }, () => Math.floor(Math.random() * 10) + 1);
 
 function bubbleSort_loopMethod(array, n = array.length) {
   for (let i = 0; i < n - 1; i++) {
@@ -39,6 +38,6 @@ function bubbleSort_recursiveMethod(array, n = array.length) {
   bubbleSort_recursiveMethod(array, n - 1);
 }
 
-console.log(`loopMethod: ${bubbleSort_loopMethod(testArr)}`);
-bubbleSort_recursiveMethod(testArr);
-console.log(`recursiveMethod: ${testArr}`);
+console.log(`loopMethod: ${bubbleSort_loopMethod(myArray)}`);
+bubbleSort_recursiveMethod(myArray);
+console.log(`recursiveMethod: ${myArray}`);
