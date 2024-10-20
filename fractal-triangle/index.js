@@ -49,11 +49,11 @@ const x3 = 1000,
 // 动态修改
 const slider = document.getElementById("myRange");
 
-slider.addEventListener("input", function() {
+slider.addEventListener("input", function () {
   const loop = slider.value;
+  document.getElementById("num").innerHTML = slider.value;
   console.log(loop);
 
   // 调用函数绘制分形三角形
   drawFractalTriangle(x1, y1, x2, y2, x3, y3, loop);
 });
-
