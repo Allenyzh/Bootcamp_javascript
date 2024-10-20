@@ -6,4 +6,4 @@
 
 ### Fractal Triangle
 
-- 1019 ![fractal Triangle](assets\fractal-triangle.png)
+- 1019 ![fractal Triangle](assets/fractal-triangle.png)
