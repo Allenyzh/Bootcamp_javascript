@@ -12,7 +12,7 @@ document.body.appendChild(myCanvas);
 const ctx = myCanvas.getContext("2d");
 
 // 递归函数
-function drawFractalTriangle(ctx, x1, y1, x2, y2, x3, y3, loop) {
+function drawFractalTriangle(x1, y1, x2, y2, x3, y3, loop) {
   if (loop === 0) {
     // 基础情况：绘制简单的三角形
     ctx.beginPath();
@@ -32,9 +32,9 @@ function drawFractalTriangle(ctx, x1, y1, x2, y2, x3, y3, loop) {
     const midY3 = (y1 + y3) / 2;
 
     // 递归绘制三个子三角形
-    drawFractalTriangle(ctx, x1, y1, midX1, midY1, midX3, midY3, loop - 1); // 上方第一个三角形
-    drawFractalTriangle(ctx, midX1, midY1, x2, y2, midX2, midY2, loop - 1); // 左下方第二个三角形
-    drawFractalTriangle(ctx, midX3, midY3, midX2, midY2, x3, y3, loop - 1); // 右下方第三个三角形
+    drawFractalTriangle(x1, y1, midX1, midY1, midX3, midY3, loop - 1); // 上方第一个三角形
+    drawFractalTriangle(midX1, midY1, x2, y2, midX2, midY2, loop - 1); // 左下方第二个三角形
+    drawFractalTriangle(midX3, midY3, midX2, midY2, x3, y3, loop - 1); // 右下方第三个三角形
   }
 }
 
@@ -46,8 +46,14 @@ const x2 = 0,
 const x3 = 1000,
   y3 = height;
 
-// 设置递归次数
-const loop = 7;
+// 动态修改
+const slider = document.getElementById("myRange");
 
-// 调用函数绘制分形三角形
-drawFractalTriangle(ctx, x1, y1, x2, y2, x3, y3, loop);
+slider.addEventListener("input", function() {
+  const loop = slider.value;
+  console.log(loop);
+
+  // 调用函数绘制分形三角形
+  drawFractalTriangle(x1, y1, x2, y2, x3, y3, loop);
+});
+
