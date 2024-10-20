@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif ;
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.mainContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.project {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+}
+.project h2 {
+    margin-top: 0;
+}
+.project p {
+    margin: 10px 0;
+}
+.project a {
+    text-decoration: none;
+    color: #89d0ff;
+}
+.project a:hover {
+    text-decoration: underline;
+}
