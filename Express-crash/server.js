@@ -1,8 +1,17 @@
-const express = require("express");
-const path = require("path");
+// const express = require("express");
+// const path = require("path");
+// const posts = require("./routes/posts");
+
+import express from "express"; // Es modules
+import path from "path"; // Es modules
+import posts from "./routes/posts.js"; // Es modules
 const port = process.env.PORT || 8000;
 
 const app = express();
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // setup static folder
 // app.use(express.static(path.join(__dirname, "public")));
@@ -15,21 +24,7 @@ const app = express();
 //   res.sendFile(path.join(__dirname, "public", "about.html"));
 // });
 
-let posts = [
-  { id: 1, title: "post One" },
-  { id: 2, title: "post Two" },
-  { id: 3, title: "post Three" },
-];
-
-// Get all posts
-app.get("/api/posts", (req, res) => {
-  res.json(posts);
-});
-
-// Get a single posts
-app.get("/api/posts/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  res.json(posts.filter((post) => post.id === id));
-});
+// Routes
+app.use("/api/posts", posts);
 
 app.listen(port, () => console.log(`Server is runing on port ${port}`));
