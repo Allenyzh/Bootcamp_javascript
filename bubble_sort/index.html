@@ -22,7 +22,13 @@
     ></script>
 
     <script src="script.js"></script>
-    <script src="reset.js"></script>
+    <script type="module">
+      // 导入 refreshPage 函数
+      import refreshPage from "./reset.js";
+
+      // 把 refreshPage 赋值给全局对象，以便在 HTML 中调用
+      window.refreshPage = refreshPage;
+    </script>
     <style>
       #array-container {
         display: flex;
