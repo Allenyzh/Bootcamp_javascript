@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kirby SVG Component</title>
+    <style>
+      :root {
+        --black: #87213c;
+        --white: #fff;
+        --primary-color: #f9dde3;
+        --primary-color-tint: #fcf2f5;
+        --secondary-color: #ff2961;
+        --accent-color: #fae798;
+        --mail-color: #326dcc;
+        --star-color: #fae798;
+        --star-sparkly-color: #b8d7ff;
+        --primary-font: "Fredoka One", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        background-color: var(--primary-color-tint);
+        font-size: 16px;
+        line-height: 1;
+        font-family: var(--primary-font);
+      }
+
+      .kirby-wrap {
+        position: relative;
+        z-index: 5;
+        display: inline-block;
+        height: 120px;
+        width: 120px;
+        overflow: visible;
+      }
+
+      .kirby-stroke {
+        stroke: var(--black);
+        stroke-width: 3px;
+        stroke-miterlimit: 10;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+
+      .kirby-body {
+        fill: var(--primary-color);
+      }
+
+      .kirby-mouth-open-tongue,
+      .kirby-foot {
+        fill: var(--secondary-color);
+      }
+
+      .kirby-eye,
+      .kirby-hat-dark,
+      .kirby-mouth-open-inner {
+        fill: var(--black);
+      }
+
+      .kirby-blush {
+        stroke: var(--secondary-color);
+      }
+
+      .kirby-blush-small {
+        stroke-width: 2.5px;
+      }
+
+      .kirby-star {
+        stroke-width: 3px;
+        stroke: currentColor;
+        fill: var(--star-color);
+      }
+
+      .kirby-hat-band {
+        fill: var(--accent-color);
+      }
+
+      .kirby-hat {
+        fill: var(--mail-color);
+      }
+
+      .kirby-envelope {
+        fill: var(--white);
+      }
+
+      .kirby-envelope-star {
+        fill: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="kirby-wrap">
+      <svg id="kirby" class="kirby" viewBox="0 0 200 200">
+        <use href="#star" class="kirby-star-spit"></use>
+        <defs>
+          <path
+            d="M167.58,120.58c0,18-6,30.75-62.29,29.58C49,149,43,138.58,43,120.58S70.89,85,105.29,85 S167.58,102.59,167.58,120.58z"
+          ></path>
+          <path
+            id="star"
+            class="kirby-star"
+            d="M119.43,124.74l4.63-5.32a4.08,4.08,0,0,0-2.39-6.7l-5.23-1a.9.9,0,0,1-.56-.39l-4.67-7.69a4.28,4.28,0,0,0-7.27,0l-4.68,7.69a.85.85,0,0,1-.56.39l-5.23,1a4.09,4.09,0,0,0-2.39,6.7l4.63,5.32a.77.77,0,0,1,.18.72l-1.51,6a4.19,4.19,0,0,0,5.82,4.73l7-3a.89.89,0,0,1,.68,0l7,3a4.19,4.19,0,0,0,5.82-4.73l-1.51-6A.82.82,0,0,1,119.43,124.74Z"
+          ></path>
+        </defs>
+        <g id="legLeft">
+          <ellipse
+            class="kirby-foot"
+            cx="90"
+            cy="141.5"
+            rx="23"
+            ry="26"
+          ></ellipse>
+          <ellipse
+            class="kirby-stroke"
+            cx="85"
+            cy="141.5"
+            rx="23"
+            ry="26"
+          ></ellipse>
+        </g>
+        <g id="legRight">
+          <ellipse
+            class="kirby-foot"
+            cx="138"
+            cy="134.5"
+            rx="23"
+            ry="26"
+          ></ellipse>
+          <ellipse
+            class="kirby-stroke"
+            cx="138"
+            cy="129.5"
+            rx="23"
+            ry="26"
+          ></ellipse>
+        </g>
+        <g id="armLeft">
+          <circle class="kirby-body" cx="51.5" cy="76" r="20.5"></circle>
+          <circle class="kirby-stroke" cx="50.5" cy="82" r="20.5"></circle>
+        </g>
+        <g id="body">
+          <path
+            class="kirby-body"
+            d="M159,95.5 C159,127.25637 133.25637,153 101.5,153 69.74363,153 44,127.25637 44,95.5 44,63.74363 69.74363,38 101.5,38 133.25637,38 159,63.74363 159,95.5 z"
+          ></path>
+          <path
+            class="kirby-stroke"
+            d="M158,91.5 C158,123.25637 132.25637,149 100.5,149 68.74363,149 43,123.25637 43,91.5 43,59.74363 68.74363,34 100.5,34 132.25637,34 158,59.74363 158,91.5 z"
+          ></path>
+        </g>
+        <g id="armRight">
+          <path
+            class="kirby-body"
+            d="M141,58.73A20.5,20.5,0,1,1,154.68,94.5"
+          ></path>
+          <path
+            class="kirby-stroke"
+            d="M136,58.73A20.5,20.5,0,1,1,149.68,94.5"
+          ></path>
+        </g>
+        <g id="face">
+          <path
+            class="kirby-eye"
+            d="M84,84.53c0,5.8-1.57,9.47-3.5,9.47S77,90.33,77,84.53,78.57,73,80.5,73,84,78.73,84,84.53Z"
+          ></path>
+          <path
+            class="kirby-eye"
+            d="M68,84.53c0,5.8-1.57,9.47-3.5,9.47S61,90.33,61,84.53,62.57,73,64.5,73,68,78.73,68,84.53Z"
+          ></path>
+          <path
+            class="kirby-stroke"
+            d="M77,98c0,1.93-2.12,3.5-4.5,3.5S68,99.93,68,98"
+          ></path>
+        </g>
+        <path
+          class="kirby-stroke"
+          d="M70,133.5a2.2,2.2,0,0,1,2-1,2.4,2.4,0,0,1,2,1"
+        ></path>
+        <g id="hat">
+          <rect
+            class="kirby-envelope"
+            x="130.99"
+            y="9"
+            width="67.5"
+            height="45"
+            rx="10"
+          ></rect>
+          <rect
+            class="kirby-stroke"
+            x="129.85"
+            y="3"
+            width="67.5"
+            height="45"
+            rx="10"
+          ></rect>
+          <polyline
+            class="kirby-stroke"
+            points="131.85 10 163.6 31.5 195.35 10"
+          ></polyline>
+          <path
+            class="kirby-envelope-star kirby-stroke"
+            d="M170,31l2.48-2.93a2.26,2.26,0,0,0-1.28-3.68l-2.8-.56a.46.46,0,0,1-.3-.22l-2.51-4.23a2.26,2.26,0,0,0-3.89,0l-2.51,4.23a.46.46,0,0,1-.3.22l-2.8.56a2.26,2.26,0,0,0-1.28,3.68L157.25,31a.45.45,0,0,1,.1.4l-.81,3.32a2.26,2.26,0,0,0,3.12,2.6l3.76-1.67a.48.48,0,0,1,.37,0l3.76,1.67a2.26,2.26,0,0,0,3.12-2.6l-.81-3.32A.45.45,0,0,1,170,31Z"
+          ></path>
+        </g>
+      </svg>
+    </div>
+  </body>
+</html>
