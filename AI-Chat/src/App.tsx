@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 
+
 function App() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
   const [input, setInput] = useState('');
 
   const sendMessage = async () => {
-    if (input.trim() === '') return;
+    if (input.trim() === '') return;  // trim method 去除头尾空白，同时确保输入的不是空白内容
 
     const userMessage = { role: 'user', content: input };
     setMessages([...messages, userMessage]);
