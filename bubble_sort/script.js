@@ -54,7 +54,7 @@ $(document).ready(function () {
         // 重新渲染数组，突出显示正在比较的元素
         renderArray(array, i);
 
-        // 延迟 1 秒后继续当前轮次
+        // 延迟
         setTimeout(() => {
           bubbleSortStep(array, n, i + 1);
         }, 300);
