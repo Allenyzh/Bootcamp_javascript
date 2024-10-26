@@ -1,7 +1,6 @@
 $(document).ready(function () {
   $(document).ready(function () {
-
-    isSorted = false
+    isSorted = false;
 
     // 生成随机长度在3到10之间的数组
     let arrayLength = Math.floor(Math.random() * (10 - 3 + 1)) + 3;
@@ -16,10 +15,7 @@ $(document).ready(function () {
     console.log("Initial Array:", arrayInitial);
 
     // 使用 jQuery 显示数组并设置颜色
-    function renderArray(
-      array,
-      compareIndex = -1,
-    ) {
+    function renderArray(array, compareIndex = -1) {
       $("#array-container").empty(); // 清空当前内容
       $.each(array, function (index, value) {
         const barColor = isSorted
@@ -29,7 +25,9 @@ $(document).ready(function () {
           : "bg-info";
 
         $("#array-container").append(
-          `<div class="bar ${barColor}" style="height: ${value*30}px"> ${value} </div>`
+          `<div class="bar ${barColor}" style="height: ${
+            value * 30
+          }px"> ${value} </div>`
         );
       });
     }
