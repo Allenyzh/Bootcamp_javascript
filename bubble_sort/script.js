@@ -3,7 +3,7 @@ $(document).ready(function () {
     isSorted = false;
 
     // 生成随机长度在3到10之间的数组
-    let arrayLength = Math.floor(Math.random() * (10 - 3 + 1)) + 3;
+    let arrayLength = Math.floor(Math.random() * (10 - 4 + 1)) + 4;
 
     // 生成随机数组元素在1到10之间
     let arrayInitial = Array.from(
@@ -22,7 +22,7 @@ $(document).ready(function () {
           ? "bg-success"
           : index === compareIndex || index === compareIndex + 1
           ? "bg-warning"
-          : "bg-info";
+          : "";
 
         $("#array-container").append(
           `<div class="bar ${barColor}" style="height: ${
@@ -57,13 +57,11 @@ $(document).ready(function () {
         // 延迟 1 秒后继续当前轮次
         setTimeout(() => {
           bubbleSortStep(array, n, i + 1);
-        }, 1000);
+        }, 300);
       } else {
         // 一轮结束，开始下一轮
         renderArray(array, -1, n);
-        setTimeout(() => {
-          bubbleSortStep(array, n - 1, 0);
-        }, 500);
+        setTimeout(bubbleSortStep(array, n - 1, 0), 0);
       }
     }
 
