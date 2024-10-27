@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>订餐平台</title>
+  </head>
+  <body>
+    <h1>订餐平台</h1>
+    <form id="orderForm">
+      <label for="customerName">客户姓名:</label>
+      <input type="text" id="customerName" required /><br /><br />
+
+      <label for="dish">餐点:</label>
+      <input type="text" id="dish" required /><br /><br />
+
+      <button type="button" onclick="submitOrder()">提交订单</button>
+    </form>
+
+    <script>
+      function submitOrder() {
+        const customerName = document.getElementById("customerName").value;
+        const dish = document.getElementById("dish").value;
+
+        fetch("/submit-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ customerName, dish }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
