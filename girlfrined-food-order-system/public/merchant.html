@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商家订单管理</title>
+  </head>
+  <body>
+    <h1>商家订单管理</h1>
+    <button onclick="fetchOrders()">刷新订单列表</button>
+    <ul id="orderList"></ul>
+
+    <script>
+      function fetchOrders() {
+        fetch("/orders")
+          .then((response) => response.json())
+          .then((orders) => {
+            const orderList = document.getElementById("orderList");
+            orderList.innerHTML = "";
+            orders.forEach((order, index) => {
+              const listItem = document.createElement("li");
+              listItem.textContent = `订单 ${index + 1}: ${
+                order.customerName
+              } 点了 ${order.dish}`;
+              orderList.appendChild(listItem);
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
