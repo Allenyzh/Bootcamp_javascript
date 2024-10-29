@@ -55,3 +55,43 @@ const sumPeople = (array) => {
   }, initialValue);
 };
 console.log(sumPeople(people));
+
+const books = [
+  { title: "Book A", genre: "Fiction", language: "English" },
+  { title: "Book B", genre: "Non-Fiction", language: "Chinese" },
+  { title: "Book C", genre: "Non-Fiction", language: "English" },
+  { title: "Book D", genre: "Fiction", language: "Spanish" },
+  { title: "Book E", genre: "Fiction", language: "English" },
+];
+// Expected output: { Fiction: [{ title: "Book A" }, { title: "Book C" }], Non-Fiction: [{ title: "Book B" }] }
+
+const groupItemByPro = (array,property) => {
+  return array.reduce((acc, cur) => {
+    acc[cur[property]] = (acc[cur[property]] || []).concat(cur);
+    return acc;
+  }, []);
+};
+
+console.log(groupItemByPro(books,'language')['English']); 
+console.log(groupItemByPro(groupItemByPro(books,'language')['English'],"genre"));
+
+
+// const groupItemByGenreAndLanguage = (array) => {
+//   return array.reduce((acc, cur) => {
+//     if (!acc[cur.genre]) {
+//       acc[cur.genre] = {}; // 初始化genre对象
+//     }
+//     if (!acc[cur.genre][cur.language]) {
+//       acc[cur.genre][cur.language] = []; // 初始化language数组
+//     }
+//     acc[cur.genre][cur.language].push({ title: cur.title }); // 仅存储title
+//     return acc;
+//   }, {});
+// };
+
+// // console.log(groupItemByGenreAndLanguage(books));
+// console.dir(groupItemByGenreAndLanguage(books), { depth: null });
+
+
+
+
