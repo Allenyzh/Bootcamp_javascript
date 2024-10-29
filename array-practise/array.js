@@ -63,7 +63,7 @@ const books = [
   { title: "Book D", genre: "Fiction", language: "Spanish" },
   { title: "Book E", genre: "Fiction", language: "English" },
 ];
-// Expected output: { Fiction: [{ title: "Book A" }, { title: "Book C" }], Non-Fiction: [{ title: "Book B" }] }
+
 
 const groupItemByPro = (array,property) => {
   return array.reduce((acc, cur) => {
