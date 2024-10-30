@@ -1,7 +1,7 @@
 GET http://localhost:8000/api/todos
 ###
 
-GET http://localhost:8000/api/todos/5
+GET http://localhost:8000/api/todos/2
 ###
 
 POST http://localhost:8000/api/todos
@@ -10,7 +10,7 @@ content-type: application/json
 {
     "title": "New todo",
     "description": "new content",
-    "completed": "false"
+    "completed": false
 }
 
 ###
@@ -19,10 +19,11 @@ PUT http://localhost:8000/api/todos/1
 content-type: application/json
 
 {
+    "id": "1",
     "title": "updated todo",
     "description": "updated content",
     "completed": true
 }
 ###
 
-DELETE  http://localhost:8000/api/todos/3
+DELETE  http://localhost:8000/api/todos/
