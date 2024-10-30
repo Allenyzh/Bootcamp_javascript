@@ -8,7 +8,7 @@ POST http://localhost:8000/api/todos
 content-type: application/json
 
 {
-    "title": "New todo",
+    "title": "New todo 3",
     "description": "new content",
     "completed": false
 }
@@ -26,4 +26,4 @@ content-type: application/json
 }
 ###
 
-DELETE  http://localhost:8000/api/todos/
+DELETE  http://localhost:8000/api/todos/3
