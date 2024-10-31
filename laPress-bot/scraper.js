@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import dotenv from "dotenv";
 dotenv.config();
 
-(async () => {
+export async function scrapeContent() {
   // Launch the browser and open a new blank page
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
@@ -17,24 +17,29 @@ dotenv.config();
     if (element) {
       const content = await element.evaluate((el) => el.textContent.trim());
       console.log(content);
+      return content;
     }
+    return null;
   }
+
+  // 初始化变量
+  let title, author, lead;
 
   // 标题
   const titleElement = await page.$(
     ".headlines.titleModule .title.titleModule__main"
   );
-  getElementContent(titleElement);
+  title = await getElementContent(titleElement);
 
   // 作者
   const autherElement = await page.$(
     ".author.authorModule.authorModule--hasAuthorSheet .authorModule__content .details.authorModule__details .name.authorModule__name "
   );
-  getElementContent(autherElement);
+  author = await getElementContent(autherElement);
 
   // 摘要
   const leadElement = await page.$(".lead.textModule.textModule--type-lead");
-  getElementContent(leadElement);
+  lead = await getElementContent(leadElement);
 
   const elements = await page.evaluate(() => {
     // 获取所有符合条件的 <p> 和 <h2> 元素
@@ -56,7 +61,7 @@ dotenv.config();
     });
 
     // 返回每个元素的文本内容
-    return allElements.map((el) => ({
+    return mainParagraphContent.map((el) => ({
       tag: el.tagName.toLowerCase(),
       text: el.textContent,
     }));
@@ -64,4 +69,14 @@ dotenv.config();
   console.log(elements);
 
   await browser.close();
-})();
+
+  /// 创建一个数组存储所有数据，包括标题、作者、摘要和内容
+  const contentArray = [
+    { tag: "title", text: title || "无" },
+    { tag: "author", text: author || "无" },
+    { tag: "lead", text: lead || "无" },
+    ...elements,
+  ];
+
+  return contentArray;
+}
