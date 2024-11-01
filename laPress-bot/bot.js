@@ -1,7 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
-import { scrapeContent } from "./scraper.js"; // 导入 scrapeContent 函数
-dotenv.config();
+import { singleNews } from "./scraper.js";
 
 // 从 .env 文件中获取 Telegram Bot Token
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -18,11 +17,11 @@ bot.onText(/\/scrape/, async (msg) => {
 
   try {
     // 调用爬虫函数来获取网页内容
-    const scrapedData = await scrapeContent();
+    const scrapedData = await singleNews();
 
     // 构造回复消息
     let replyMessage = "";
-    
+
     scrapedData.forEach((item) => {
       replyMessage += `${item.text}\n\n`;
     });

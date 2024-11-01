@@ -2,9 +2,9 @@ import puppeteer from "puppeteer";
 import dotenv from "dotenv";
 dotenv.config();
 
-export async function scrapeContent() {
+export async function singleNews() {
   // Launch the browser and open a new blank page
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   // 网页完全加载
@@ -66,17 +66,16 @@ export async function scrapeContent() {
       text: el.textContent,
     }));
   });
-  console.log(elements);
 
   await browser.close();
 
-  /// 创建一个数组存储所有数据，包括标题、作者、摘要和内容
+  // 创建一个数组存储所有数据，包括标题、作者、摘要和内容
   const contentArray = [
     { tag: "title", text: title || "无" },
     { tag: "author", text: author || "无" },
     { tag: "lead", text: lead || "无" },
     ...elements,
   ];
-
+  console.log(contentArray);
   return contentArray;
 }
