@@ -1,6 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
 import { singleNews } from "./scraper.js";
+dotenv.config();
 
 // 从 .env 文件中获取 Telegram Bot Token
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -23,7 +24,7 @@ bot.onText(/\/scrape/, async (msg) => {
     let replyMessage = "";
 
     scrapedData.forEach((item) => {
-      replyMessage += `${item.text}\n\n`;
+      replyMessage += `${item.children}\n\n`;
     });
 
     // 将消息分割成 4096 个字符的块来发送

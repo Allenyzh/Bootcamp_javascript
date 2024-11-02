@@ -63,7 +63,7 @@ export async function singleNews() {
     // 返回每个元素的文本内容
     return mainParagraphContent.map((el) => ({
       tag: el.tagName.toLowerCase(),
-      text: el.textContent,
+      children: el.textContent,
     }));
   });
 
@@ -71,9 +71,9 @@ export async function singleNews() {
 
   // 创建一个数组存储所有数据，包括标题、作者、摘要和内容
   const contentArray = [
-    { tag: "title", text: title || "无" },
-    { tag: "author", text: author || "无" },
-    { tag: "lead", text: lead || "无" },
+    { tag: "title", children: title || "无" },
+    { tag: "author", children: author || "无" },
+    { tag: "lead", children: lead || "无" },
     ...elements,
   ];
   console.log(contentArray);
