@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-app.use(express.json()); // Middleware to parse JSON
+app.use(express.json()); 
 
 // const router = express.Router();
 

@@ -1,0 +1,35 @@
+GET http://localhost:8000/api/items
+###
+
+GET http://localhost:8000/api/items/2
+###
+
+POST http://localhost:8000/api/items
+content-type: application/json
+
+{
+    "name": "Water",
+    "quantity": 5,
+    "purchased": false
+}
+###
+
+PUT http://localhost:8000/api/items/1
+content-type: application/json
+
+{
+    "name": "update",
+    "quantity": 10,
+    "purchased": true
+}
+###
+
+DELETE http://localhost:8000/api/items/3
+###
+
+PATCH http://localhost:8000/api/items/1
+content-type: application/json
+
+{
+    "quantity": 150
+}
