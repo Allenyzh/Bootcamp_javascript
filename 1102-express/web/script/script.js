@@ -74,16 +74,27 @@ function editItem(id) {
               <td><label><input type="checkbox" id="itemPurchased" ${
                 item.purchased ? "checked" : ""
               } /></label></td>
-              <td><button type="button" onclick="confirmEdit(${id})">Confirm</button> <button type="button" onclick="${cancelEdit()}">Cancel</button></td> 
+              <td>            
+                <button type="button" id="confirmEditButton">Confirm</button>
+                <button type="button" id="cancelEditButton">Cancel</button>
+              </td> 
             </tr>
           </tbody>
-        `);// cancel function 在edit按钮点击以后自动触发
+        `); // cancel function 在edit按钮点击以后自动触发
+
+    // 绑定事件到新渲染的按钮，使用 on 绑定而非直接调用
+    $("#confirmEditButton")
+      .off("click")
+      .on("click", () => confirmEdit(id));
+    $("#cancelEditButton")
+      .off("click")
+      .on("click", () => cancelEdit());
   });
 }
 
 // cancel
 function cancelEdit() {
-  console.log("Cancel edit triggered"); 
+  console.log("Cancel edit triggered");
   loadItems();
 }
 
