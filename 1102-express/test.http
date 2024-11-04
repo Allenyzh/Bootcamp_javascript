@@ -14,13 +14,13 @@ content-type: application/json
 }
 ###
 
-PUT http://localhost:8000/api/items/5
+PUT http://localhost:8000/api/items/1
 content-type: application/json
 
 {
     "name": "update",
     "quantity": 10,
-    "purchased": false
+    "purchased": true
 }
 ###
 
