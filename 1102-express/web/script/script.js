@@ -74,11 +74,17 @@ function editItem(id) {
               <td><label><input type="checkbox" id="itemPurchased" ${
                 item.purchased ? "checked" : ""
               } /></label></td>
-              <td><button type="button" onclick="confirmEdit(${id})">Confirm</button> <button type="button" onclick="cancelEdit()">Cancel</button></td>
+              <td><button type="button" onclick="confirmEdit(${id})">Confirm</button> <button type="button" onclick="${cancelEdit()}">Cancel</button></td> 
             </tr>
           </tbody>
-        `);
+        `);// cancel function 在edit按钮点击以后自动触发
   });
+}
+
+// cancel
+function cancelEdit() {
+  console.log("Cancel edit triggered"); 
+  loadItems();
 }
 
 // 渲染商品列表
