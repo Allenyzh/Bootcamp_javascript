@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require('cors'); // 跨域请求
+const cors = require("cors"); // 跨域请求
 app.use(express.json());
 app.use(cors());
 
@@ -83,4 +83,4 @@ app.patch("/api/items/:id", (req, res) => {
         .json({ msg: "Item updated successfully", item: items[itemIndex] }));
 });
 
-app.listen(8000, () => console.log(`Server is online at port 8000`));
+app.listen(8000, "0.0.0.0", () => console.log(`Server is online at port 8000`));
