@@ -25,7 +25,7 @@ function addItem(event) {
   const quantity = parseInt($("#newItemQuantity").val(), 10);
   const purchased = $("#newItemPurchased").is(":checked");
   console.log(name, quantity, purchased);
-  $("#itemForm input").val(""); 
+  $("#itemForm input").val("");
   $.ajax({
     type: "POST",
     url: `${apiUrl}`,
@@ -33,7 +33,6 @@ function addItem(event) {
     data: JSON.stringify({ name, quantity, purchased }),
     success: (response) => {
       console.log(response);
-
       $.get(apiUrl, (data) => {
         renderItems(data);
       });
