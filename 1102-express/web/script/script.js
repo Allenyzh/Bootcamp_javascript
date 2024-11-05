@@ -75,9 +75,9 @@ function editItem(id) {
               <td><label><input class="editPurchased" type="checkbox" id="itemPurchased" ${
                 item.purchased ? "checked" : ""
               } /></label></td>
-              <td>            
-                <button type="button" id="confirmEditButton">Confirm</button>
-                <button type="button" id="cancelEditButton">Cancel</button>
+              <td style="display: flex;  justify-content: space-evenly ">            
+                <div type="button" class="actionBtn" id="confirmEditButton">✔️</div>
+                <div type="button" class="actionBtn" id="cancelEditButton">🔙</div>
               </td> 
             </tr>
           </tbody>

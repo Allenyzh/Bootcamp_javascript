@@ -27,7 +27,7 @@ table {
 table,
 th,
 td {
-  border: 1px solid #ddd;
+  border: 0.5px solid #ddd;
 }
 th,
 td {
@@ -37,4 +37,13 @@ td {
 .actions div {
   cursor: pointer;
   margin: 0 5px;
+}
+.actions div:hover{
+  scale: 150%;
+}
+.actionBtn{
+  cursor: pointer;
+}
+.actionBtn:hover{
+  scale: 150%;
 }
