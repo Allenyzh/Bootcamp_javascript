@@ -52,6 +52,13 @@ function editItem(id) {
       return;
     }
 
+    const itemForm = $("#itemForm");
+    itemForm.empty();
+    itemForm.append(`
+      <div>
+      <h3>Edit the Item</h3>
+      </div>
+      `);
     const titleLabel = $(".titleLabel");
     titleLabel.empty();
     titleLabel.append(`
@@ -129,6 +136,29 @@ function cancelEdit() {
 function renderItems(items) {
   const itemsContainer = $("#itemsContainer");
   itemsContainer.empty();
+  const itemForm = $("#itemForm");
+  itemForm.empty();
+  itemForm.append(
+    `<input
+          type="text"
+          class="newInput"
+          id="newItemName"
+          placeholder="Name"
+          required
+        />
+        <input
+          class="newInput"
+          type="number"
+          id="newItemQuantity"
+          placeholder="Quantity"
+          required
+        />
+        <label>
+          <input type="checkbox" id="newItemPurchased" /> purchased</label
+        >
+        <button type="submit">add items</button>
+      </form>`
+  );
   items.forEach((item) => {
     itemsContainer.append(`
             <tr>
