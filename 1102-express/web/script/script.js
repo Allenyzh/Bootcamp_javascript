@@ -25,7 +25,7 @@ function addItem(event) {
   const quantity = parseInt($("#newItemQuantity").val(), 10);
   const purchased = $("#newItemPurchased").is(":checked");
   console.log(name, quantity, purchased);
-
+  $("#itemForm input").val(""); 
   $.ajax({
     type: "POST",
     url: `${apiUrl}`,
@@ -33,6 +33,7 @@ function addItem(event) {
     data: JSON.stringify({ name, quantity, purchased }),
     success: (response) => {
       console.log(response);
+
       $.get(apiUrl, (data) => {
         renderItems(data);
       });
@@ -65,13 +66,13 @@ function editItem(id) {
           </thead>
           <tbody id="itemsContainer">
             <tr>
-              <td><input type="text" placeholder="Name" value="${
+              <td><input class="editName" type="text" placeholder="Name" value="${
                 item.name
               }" required /></td>
-              <td><input type="number" placeholder="Quantity" value="${
+              <td><input class="editQuantity" type="number" placeholder="Quantity" value="${
                 item.quantity
               }" required /></td>
-              <td><label><input type="checkbox" id="itemPurchased" ${
+              <td><label><input class="editPurchased" type="checkbox" id="itemPurchased" ${
                 item.purchased ? "checked" : ""
               } /></label></td>
               <td>            
@@ -92,6 +93,33 @@ function editItem(id) {
   });
 }
 
+// confirm edit
+function confirmEdit(id) {
+  const editName = $(".editName").val();
+  const editQuantity = $(".editQuantity").val();
+  const editPurchased = $(".editPurchased").is(":checked");
+  console.log(editName, editQuantity, editPurchased);
+  $.ajax({
+    url: `${apiUrl}/${id}`,
+    type: `PUT`,
+    data: JSON.stringify({
+      name: editName,
+      quantity: editQuantity,
+      purchased: editPurchased,
+    }),
+    contentType: "application/json",
+    success: (res) => {
+      console.log(`修改成功:`, res), cancelEdit();
+    },
+    error: (xhr, status, error) => {
+      console.error("请求失败 - 状态码:", xhr.status); // 状态码，例如404、500等
+      console.error("错误信息:", error); // 错误信息
+      console.error("状态类型:", status); // 状态类型，例如 "timeout"、"error"
+      console.error("响应内容:", xhr.responseText);
+    },
+  });
+}
+
 // cancel
 function cancelEdit() {
   console.log("Cancel edit triggered");
@@ -105,12 +133,12 @@ function renderItems(items) {
   items.forEach((item) => {
     itemsContainer.append(`
             <tr>
-                <td>${item.id}</td>
                 <td>${item.name}</td>
                 <td>${item.quantity}</td>
-                <td class="actions">
-                    <i class="fas fa-edit" onclick="editItem(${item.id})"></i>
-                    <i class="fas fa-trash" onclick="deleteItem(${item.id})"></i>
+                <th>${item.purchased ? "✔️" : "❌"}</th>
+                <td class="actions" style="display: flex;  justify-content: center">
+                    <div onclick="editItem(${item.id})">📝</div>
+                    <div onclick="deleteItem(${item.id})">🗑️</div>
                 </td>
             </tr>`);
   });

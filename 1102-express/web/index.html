@@ -21,8 +21,15 @@
     <div class="container">
       <h2>Items Management</h2>
       <form id="itemForm">
-        <input type="text" id="newItemName" placeholder="Name" required />
         <input
+          type="text"
+          class="newInput"
+          id="newItemName"
+          placeholder="Name"
+          required
+        />
+        <input
+          class="newInput"
           type="number"
           id="newItemQuantity"
           placeholder="Quantity"
@@ -36,9 +43,9 @@
       <table class="titleLabel">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Quantity</th>
+            <th>Purchased</th>
             <th>Actions</th>
           </tr>
         </thead>

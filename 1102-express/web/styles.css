@@ -34,7 +34,7 @@ td {
   padding: 10px;
   text-align: center;
 }
-.actions i {
+.actions div {
   cursor: pointer;
   margin: 0 5px;
 }
