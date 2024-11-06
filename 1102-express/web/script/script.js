@@ -1,21 +1,30 @@
 const apiUrl = "http://localhost:8000/api/items";
 
-// 获取商品
-function loadItems() {
-  $.get(apiUrl, (data) => {
-    renderItems(data);
+function apiRequest(url, type, data, successCallback, errorCallback) {
+  $.ajax({
+    url: url,
+    type: type,
+    contentType: "application/json",
+    data: JSON.stringify(data),
+    success: successCallback,
+    error:
+      errorCallback || ((error) => console.error(`Error in ${type}:`, error)),
   });
 }
 
+let cachedItems = null;
+// 获取商品
+const loadItems = function () {
+  $.get(apiUrl, function (data) {
+    cachedItems = data;
+    console.log(`请求成功`);
+    renderItems(data);
+  });
+};
+
 // 删除商品
 function deleteItem(id) {
-  $.ajax({
-    url: `${apiUrl}/${id}`,
-    type: "DELETE",
-    success: () => {
-      loadItems();
-    },
-  });
+  apiRequest(`${apiUrl}/${id}`, "DELETE", {}, loadItems);
 }
 
 // 添加商品
@@ -24,23 +33,8 @@ function addItem(event) {
   const name = $("#newItemName").val();
   const quantity = parseInt($("#newItemQuantity").val(), 10);
   const purchased = $("#newItemPurchased").is(":checked");
-  console.log(name, quantity, purchased);
   $("#itemForm input").val("");
-  $.ajax({
-    type: "POST",
-    url: `${apiUrl}`,
-    contentType: "application/json",
-    data: JSON.stringify({ name, quantity, purchased }),
-    success: (response) => {
-      console.log(response);
-      $.get(apiUrl, (data) => {
-        renderItems(data);
-      });
-    },
-    error: (error) => {
-      console.error("Error adding item:", error);
-    },
-  });
+  apiRequest(apiUrl, "POST", { name, quantity, purchased }, loadItems);
 }
 
 // 编辑商品
@@ -53,15 +47,13 @@ function editItem(id) {
     }
 
     const itemForm = $("#itemForm");
-    itemForm.empty();
-    itemForm.append(`
+    itemForm.empty().append(`
       <div>
       <h3>Edit the Item</h3>
       </div>
       `);
     const titleLabel = $(".titleLabel");
-    titleLabel.empty();
-    titleLabel.append(`
+    titleLabel.empty().append(`
           <thead>
             <tr>
               <th>Name</th>
@@ -87,7 +79,7 @@ function editItem(id) {
               </td> 
             </tr>
           </tbody>
-        `); // cancel function 在edit按钮点击以后自动触发
+        `);
 
     // 绑定事件到新渲染的按钮，使用 on 绑定而非直接调用
     $("#confirmEditButton")
@@ -102,34 +94,27 @@ function editItem(id) {
 // confirm edit
 function confirmEdit(id) {
   const editName = $(".editName").val();
-  const editQuantity = $(".editQuantity").val();
+  const editQuantity = parseInt($(".editQuantity").val());
   const editPurchased = $(".editPurchased").is(":checked");
-  console.log(editName, editQuantity, editPurchased);
-  $.ajax({
-    url: `${apiUrl}/${id}`,
-    type: `PUT`,
-    data: JSON.stringify({
-      name: editName,
-      quantity: editQuantity,
-      purchased: editPurchased,
-    }),
-    contentType: "application/json",
-    success: (res) => {
-      console.log(`修改成功:`, res), cancelEdit();
-    },
-    error: (xhr, status, error) => {
-      console.error("请求失败 - 状态码:", xhr.status); // 状态码，例如404、500等
-      console.error("错误信息:", error); // 错误信息
-      console.error("状态类型:", status); // 状态类型，例如 "timeout"、"error"
-      console.error("响应内容:", xhr.responseText);
-    },
+  $.get(apiUrl, (data) => {
+    const item = data.find((item) => item.id === id);
+    item.name === editName &&
+    item.quantity === editQuantity &&
+    item.purchased === editPurchased
+      ? renderItems(cachedItems)
+      : apiRequest(
+          `${apiUrl}/${id}`,
+          `PUT`,
+          { name: editName, quantity: editQuantity, purchased: editPurchased },
+          loadItems
+        );
   });
 }
 
 // cancel
 function cancelEdit() {
   console.log("Cancel edit triggered");
-  loadItems();
+  renderItems(cachedItems);
 }
 
 // 渲染商品列表
@@ -137,8 +122,7 @@ function renderItems(items) {
   const itemsContainer = $("#itemsContainer");
   itemsContainer.empty();
   const itemForm = $("#itemForm");
-  itemForm.empty();
-  itemForm.append(
+  itemForm.empty().append(
     `<input
           type="text"
           class="newInput"
