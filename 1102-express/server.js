@@ -47,14 +47,24 @@ app.post("/api/items", (req, res) => {
 app.put("/api/items/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const item = items.find((e) => e.id === id);
-  return !item
-    ? res
-        .status(404)
-        .json({ msg: `An item with the id of ${id} was not found` })
-    : ((item.name = req.body.name),
-      (item.quantity = req.body.quantity),
-      (item.purchased = req.body.purchased),
-      res.status(200).json(item));
+
+  if (!item) {
+    return res
+      .status(404)
+      .json({ msg: `An item with the id of ${id} was not found` });
+  }
+
+  const { name, quantity, purchased } = req.body;
+  if (name && quantity && typeof purchased !== "undefined") {
+    item.name = name;
+    item.quantity = quantity;
+    item.purchased = purchased;
+    return res.status(200).json(item);
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "All fields (name, quantity, purchased) must be provided" });
+  }
 });
 
 // 删
@@ -73,14 +83,32 @@ app.patch("/api/items/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const itemIndex = items.findIndex((e) => e.id === id);
   const updateData = req.body;
-  return itemIndex === -1
-    ? res
-        .status(404)
-        .json({ msg: `An item with the id of ${id} was not found` })
-    : ((items[itemIndex] = { ...items[itemIndex], ...updateData }),
-      res
-        .status(200)
-        .json({ msg: "Item updated successfully", item: items[itemIndex] }));
+
+  if (itemIndex === -1) {
+    return res
+      .status(404)
+      .json({ msg: `An item with the id of ${id} was not found` });
+  }
+
+  // 检查是否有 null 字段
+  const nullFields = Object.entries(updateData)
+    .filter(([key, value]) => value === null)
+    .map(([key]) => key);
+
+  if (nullFields.length > 0) {
+    return res.status(400).json({
+      msg: "Null fields are not allowed",
+      nullFields: nullFields,
+    });
+  }
+
+  // 合并非 null 字段到现有对象
+  items[itemIndex] = { ...items[itemIndex], ...updateData };
+
+  return res.status(200).json({
+    msg: "Item updated successfully",
+    item: items[itemIndex],
+  });
 });
 
 app.listen(8000, "0.0.0.0", () => console.log(`Server is online at port 8000`));

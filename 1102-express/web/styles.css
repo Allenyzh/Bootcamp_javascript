@@ -38,12 +38,18 @@ td {
   cursor: pointer;
   margin: 0 5px;
 }
-.actions div:hover{
-  scale: 150%;
+.actions div:hover {
+  transform: scale(1.5);
+  transition: transform 0.3s ease;
+  text-shadow: #242424;
+  text-shadow: 1px 1px 2px rgba(36, 36, 36, 0.7);
 }
-.actionBtn{
+.actionBtn {
   cursor: pointer;
 }
-.actionBtn:hover{
-  scale: 150%;
+.actionBtn:hover {
+  transform: scale(1.5);
+  transition: transform 0.3s ease;
+  text-shadow: #242424;
+  text-shadow: 1px 1px 2px rgba(36, 36, 36, 0.7);
 }
