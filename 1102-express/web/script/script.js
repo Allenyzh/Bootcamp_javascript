@@ -96,18 +96,43 @@ function confirmEdit(id) {
   const editName = $(".editName").val();
   const editQuantity = parseInt($(".editQuantity").val());
   const editPurchased = $(".editPurchased").is(":checked");
+
   $.get(apiUrl, (data) => {
     const item = data.find((item) => item.id === id);
-    item.name === editName &&
-    item.quantity === editQuantity &&
-    item.purchased === editPurchased
-      ? renderItems(cachedItems)
-      : apiRequest(
+
+    if (
+      item.name === editName &&
+      item.quantity === editQuantity &&
+      item.purchased === editPurchased
+    ) {
+      renderItems(cachedItems);
+    } else {
+      let updatedData = {};
+
+      if (item.name !== editName) updatedData.name = editName;
+      if (item.quantity !== editQuantity) updatedData.quantity = editQuantity;
+      if (item.purchased !== editPurchased)
+        updatedData.purchased = editPurchased;
+
+      if (
+        updatedData.name &&
+        updatedData.quantity &&
+        typeof updatedData.purchased !== "undefined"
+      ) {
+        apiRequest(
           `${apiUrl}/${id}`,
           `PUT`,
-          { name: editName, quantity: editQuantity, purchased: editPurchased },
+          {
+            name: editName,
+            quantity: editQuantity,
+            purchased: editPurchased,
+          },
           loadItems
         );
+      } else {
+        apiRequest(`${apiUrl}/${id}`, `PATCH`, updatedData, loadItems);
+      }
+    }
   });
 }
 

@@ -31,5 +31,6 @@ PATCH http://localhost:8000/api/items/1
 content-type: application/json
 
 {
+    "name": null,
     "quantity": 150
 }
