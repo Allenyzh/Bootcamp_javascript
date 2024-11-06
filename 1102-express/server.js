@@ -92,7 +92,7 @@ app.patch("/api/items/:id", (req, res) => {
 
   // 检查是否有 null 字段
   const nullFields = Object.entries(updateData)
-    .filter(([key, value]) => value === null)
+    .filter(([key, value]) => value === null || value === "")
     .map(([key]) => key);
 
   if (nullFields.length > 0) {

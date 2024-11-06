@@ -7,8 +7,16 @@ function apiRequest(url, type, data, successCallback, errorCallback) {
     contentType: "application/json",
     data: JSON.stringify(data),
     success: successCallback,
-    error:
-      errorCallback || ((error) => console.error(`Error in ${type}:`, error)),
+    error: (xhr) => {
+      const response = xhr.responseJSON;
+
+      if (response && response.nullFields) {
+        const nullFields = response.nullFields;
+        alert(`The following fields cannot be Empty: ${nullFields.join(", ")}`);
+      } else {
+        console.error("An error occurred:", xhr);
+      }
+    },
   });
 }
 
