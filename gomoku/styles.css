@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#chessboard {
+  display: grid;
+  grid-template-columns: repeat(20, 30px);
+  grid-template-rows: repeat(20, 30px);
+  background-color: white; /* 设置棋盘背景为白色 */
+}
+.cell {
+  width: 30px;
+  height: 30px;
+  border: 0.5px solid rgb(201, 201, 201);
+  background-color: #ffffff; /* 棋盘格的背景色 */
+  box-sizing: border-box; /* 确保边框不会影响格子大小 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell:hover{
+    background-color: lightblue;
+}
