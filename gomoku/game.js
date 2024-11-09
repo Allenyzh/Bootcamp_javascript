@@ -15,3 +15,7 @@ $(document).ready(() => {
     }
   });
 });
+
+// const str = "12\u200B3";
+// console.log(str.length);
+// console.log(str);
