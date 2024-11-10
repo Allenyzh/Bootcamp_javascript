@@ -88,9 +88,9 @@ function addContact(event) {
   const phone = $("#newItemPhone").val();
   const regex =
     /^(?!.*[.-]{2})(?![.-])[A-Za-z0-9.-]+(?<![.-])@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    
+
   if (!regex.test(email)) {
-    alert("请输入有效的邮箱地址");
+    $("#emailError").css("opacity", "100");
     return;
   }
 
