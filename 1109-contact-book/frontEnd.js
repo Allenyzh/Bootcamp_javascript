@@ -86,11 +86,14 @@ function addContact(event) {
   const name = $("#newItemName").val();
   const email = $("#newItemEmail").val();
   const phone = $("#newItemPhone").val();
+
+  // 正则表达式验证邮箱
   const regex =
     /^(?!.*[.-]{2})(?![.-])[A-Za-z0-9.-]+(?<![.-])@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
   if (!regex.test(email)) {
     $("#emailError").css("opacity", "100");
+    $("#newItemEmail").css("border", "1px solid red");
     return;
   }
 
