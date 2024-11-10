@@ -1,0 +1,16 @@
+{
+  "name": "1109-contact-book",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "start": "node script",
+    "dev": "node --watch script"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  }
+}

@@ -1,0 +1,36 @@
+GET http://localhost:8000/api/contacts
+###
+
+GET http://localhost:8000/api/contacts/2
+###
+
+POST http://localhost:8000/api/contacts
+content-type: application/json
+
+{
+    "names": "NewName",
+    "phones": "000-000-0000"
+}
+
+###
+
+PUT http://localhost:8000/api/contacts/92
+content-type: application/json
+
+{
+    "name": "Update",
+    "email": "up@example.com",
+    "phone": "111-111-1111"
+}
+###
+
+DELETE http://localhost:8000/api/contacts/3
+###
+
+PATCH http://localhost:8000/api/contacts/1
+content-type: application/json
+
+{
+    "name": "Allen",
+    "email": "allen@example.com"
+}
