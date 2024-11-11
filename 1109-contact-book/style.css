@@ -58,7 +58,7 @@ td {
   font-size: small;
 }
 #zhanwei {
-  color: #ffffff !important;
+  color: #ffffff !important; 
   -webkit-user-select: none; /* Chrome, Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
@@ -73,6 +73,19 @@ td {
   cursor: default;
 }
 #phoneError {
+  opacity: 0;
+  cursor: default;
+}
+
+#emailError-e {
+  opacity: 0;
+  cursor: default;
+}
+#nameError-e {
+  opacity: 0;
+  cursor: default;
+}
+#phoneError-e {
   opacity: 0;
   cursor: default;
 }

@@ -20,6 +20,19 @@ function apiRequest(url, type, data, successCallback, errorCallback) {
   });
 }
 
+// a c e  对应邮箱 用户名 电话的输入框元素id, b d f 对应邮箱 用户名 电话的错误信息元素id
+function checkInputError(id, inputId, isValid) {
+  if (!isValid) {
+    $(id).css("opacity", "100");
+    $(inputId).css("border", "1px solid red");
+    return true;
+  } else {
+    $(id).css("opacity", "0");
+    $(inputId).css("border", "");
+    return false;
+  }
+}
+
 let cachedContact = null;
 // Get contacts
 const loadContacts = () => {
@@ -77,6 +90,9 @@ function renderContacts(contacts) {
 
 // Delete Contact
 function deleteContacts(id) {
+  $("#nameError").css("opacity", "0");
+  $("#emailError").css("opacity", "0");
+  $("#phoneError").css("opacity", "0");
   apiRequest(`${apiUrl}/${id}`, "DELETE", {}, loadContacts);
 }
 
@@ -87,22 +103,40 @@ function addContact(event) {
   const email = $("#newItemEmail").val();
   const phone = $("#newItemPhone").val();
 
-  // 正则表达式验证邮箱
-  const regex =
-    /^(?!.*[.-]{2})(?![.-])[A-Za-z0-9.-]+(?<![.-])@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  // 分别验证每一个输入项
+  const emailHasError = checkInputError(
+    "#emailError",
+    "#newItemEmail",
+    /^(?!.*[.-]{2})(?![.-])[A-Za-z0-9.-]+(?<![.-])@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
+      email
+    )
+  );
 
-  if (!regex.test(email)) {
-    $("#emailError").css("opacity", "100");
-    $("#newItemEmail").css("border", "1px solid red");
-    return;
-  }
+  const nameHasError = checkInputError(
+    "#nameError",
+    "#newItemName",
+    /^.{0,40}$/.test(name)
+  );
 
+  const phoneHasError = checkInputError(
+    "#phoneError",
+    "#newItemPhone",
+    /^\d{3}-?\d{3}-?\d{4}$/.test(phone)
+  );
+
+  // 如果任何一个输入项有错误，则返回
+  if (emailHasError || nameHasError || phoneHasError) return;
+
+  // 清除输入框的值并发送请求
   $("#itemForm input").val("");
   apiRequest(apiUrl, "POST", { name, email, phone }, loadContacts);
 }
 
 // Edit contact
 function editContact(id) {
+  $("#nameError").css("opacity", "0");
+  $("#emailError").css("opacity", "0");
+  $("#phoneError").css("opacity", "0");
   $.get(apiUrl, (data) => {
     const contact = data.find((c) => c.id === id);
     if (!contact) {
@@ -128,10 +162,28 @@ function editContact(id) {
             </thead>
             <tbody id="itemsContainer">
               <tr>
-                <td><input class="editName" type="text" placeholder="Name" value="${contact.name}" required /></td>
-                <td><input class="editEmail" type="text" placeholder="Email" value="${contact.email}" required /></td>
-                 <td><input class="editPhone" type="text" placeholder="Phone" value="${contact.phone}" required /></td>
-                <td style="display: flex;  justify-content: space-evenly ">            
+                <td>
+                  <div style="display: block; border: none">
+                    <input class="editName" id="editName" type="text" placeholder="Name" value="${contact.name}" required />
+                    <!-- 错误信息 -->
+                    <div id="nameError-e" style="color: red;">名字太长&#xFF0C;<=40个字符<div>
+                  </div>
+                </td>
+                <td>
+                  <div style="display: block; border: none">
+                    <input class="editEmail" id="editEmail" type="text" placeholder="Email" value="${contact.email}" required />
+                    <!-- 错误信息 -->
+                    <div id="emailError-e" style="color: red;">邮箱格式不正确<div>
+                  </div>
+                </td>
+                <td>
+                  <div style="display: block; border: none">
+                    <input class="editPhone" id="editPhone" type="text" placeholder="Phone" value="${contact.phone}" required />
+                    <!-- 错误信息 -->
+                    <div id="phoneError-e" style="color: red;">电话长度应该为10位数<div>
+                  </div>
+                </td>
+                <td style="display: flex;  justify-content: space-evenly; border: none">            
                   <div type="button" class="actionBtn" id="confirmEditButton">✔️</div>
                   <div type="button" class="actionBtn" id="cancelEditButton">🔙</div>
                 </td> 
@@ -150,34 +202,58 @@ function editContact(id) {
 }
 
 function confirmEdit(id) {
-  const editName = $(".editName").val();
-  const editEmail = $(".editEmail").val();
-  const editPhone = $(".editPhone").val();
+  const name = $(".editName").val();
+  const email = $(".editEmail").val();
+  const phone = $(".editPhone").val();
+
+  // 分别验证每一个输入项
+  const emailHasError = checkInputError(
+    "#emailError-e",
+    "#editEmail",
+    /^(?!.*[.-]{2})(?![.-])[A-Za-z0-9.-]+(?<![.-])@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
+      email
+    )
+  );
+
+  const nameHasError = checkInputError(
+    "#nameError-e",
+    "#editName",
+    /^.{0,40}$/.test(name)
+  );
+
+  const phoneHasError = checkInputError(
+    "#phoneError-e",
+    "#editPhone",
+    /^\d{3}-?\d{3}-?\d{4}$/.test(phone)
+  );
+
+  // 如果任何一个输入项有错误，则返回
+  if (emailHasError || nameHasError || phoneHasError) return;
 
   $.get(apiUrl, (data) => {
     const contact = data.find((c) => c.id === id);
 
     if (
-      contact.name === editName &&
-      contact.email === editEmail &&
-      contact.phone === editPhone
+      contact.name === name &&
+      contact.email === email &&
+      contact.phone === phone
     ) {
       renderContacts(cachedContact);
     } else {
       let updatedData = {};
 
-      if (contact.name !== editName) updatedData.name = editName;
-      if (contact.phone !== editPhone) updatedData.phone = editPhone;
-      if (contact.email !== editEmail) updatedData.email = editEmail;
+      if (contact.name !== name) updatedData.name = name;
+      if (contact.phone !== phone) updatedData.phone = phone;
+      if (contact.email !== email) updatedData.email = email;
 
       if (updatedData.name && updatedData.email && updatedData.phone) {
         apiRequest(
           `${apiUrl}/${id}`,
           `PUT`,
           {
-            name: editName,
-            email: editEmail,
-            phone: editPhone,
+            name: name,
+            email: email,
+            phone: phone,
           },
           loadContacts
         );
@@ -190,6 +266,9 @@ function confirmEdit(id) {
 
 // Cancel edit
 function cancelEdit() {
+  $("#nameError").css("opacity", "0");
+  $("#emailError").css("opacity", "0");
+  $("#phoneError").css("opacity", "0");
   console.log("Cancel edit triggered");
   renderContacts(cachedContact);
 }
