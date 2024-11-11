@@ -79,7 +79,7 @@ function renderContacts(contacts) {
                 <td>${contacts.name}</td>
                 <td>${contacts.email}</td>
                 <th>${contacts.phone}</th>
-                <td class="actions" style="display: flex;  justify-content: center">
+                <td class="actions" style="display: flex;  justify-content: center; border-bottom: none; border-left: none; border-right: none">
                     <div onclick="editContact(${contacts.id})">📝</div>
                     <div onclick="deleteContacts(${contacts.id})">🗑️</div>
                 </td>
@@ -157,11 +157,11 @@ function editContact(id) {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Actions</th>
+                <th style="border-bottom: none;">Actions</th>
               </tr>
             </thead>
             <tbody id="itemsContainer">
-              <tr>
+              <tr style="border-top: 0.5px solid #ddd; border-bottom: none; border-left: none; border-right: none">
                 <td>
                   <div style="display: block; border: none">
                     <input class="editName" id="editName" type="text" placeholder="Name" value="${contact.name}" required />
