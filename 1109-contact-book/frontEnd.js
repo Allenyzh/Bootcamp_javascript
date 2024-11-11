@@ -78,7 +78,7 @@ function renderContacts(contacts) {
             <tr>
                 <td>${contacts.name}</td>
                 <td>${contacts.email}</td>
-                <th>${contacts.phone}</th>
+                <td>${contacts.phone}</td>
                 <td class="actions" style="display: flex;  justify-content: center; border-bottom: none; border-left: none; border-right: none">
                     <div onclick="editContact(${contacts.id})">📝</div>
                     <div onclick="deleteContacts(${contacts.id})">🗑️</div>
@@ -99,9 +99,9 @@ function deleteContacts(id) {
 // Add contact
 function addContact(event) {
   event.preventDefault();
-  const name = $("#newItemName").val();
-  const email = $("#newItemEmail").val();
-  const phone = $("#newItemPhone").val();
+  const name = $("#newItemName").val().trim();
+  const email = $("#newItemEmail").val().trim();
+  const phone = $("#newItemPhone").val().trim();
 
   // 分别验证每一个输入项
   const emailHasError = checkInputError(
@@ -202,9 +202,9 @@ function editContact(id) {
 }
 
 function confirmEdit(id) {
-  const name = $(".editName").val();
-  const email = $(".editEmail").val();
-  const phone = $(".editPhone").val();
+  const name = $(".editName").val().trim();
+  const email = $(".editEmail").val().trim();
+  const phone = $(".editPhone").val().trim();
 
   // 分别验证每一个输入项
   const emailHasError = checkInputError(
