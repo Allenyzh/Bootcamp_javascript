@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="frontEnd.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Contact Book</h2>
+      <form id="itemForm">
+        <!-- 输入表单渲染 -->
+      </form>
+      <form class="error-info">
+        <div id="nameError">名字太长&#xFF0C;<=40个字符</div>
+        <div id="emailError">邮箱格式不正确</div>
+        <div id="phoneError">电话长度应该为10位数</div>
+        <div id="zhanwei">000000000</div>
+      </form>
+      <table class="titleLabel">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th style="border-bottom: none;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="itemsContainer">
+          <!-- 列表会动态添加在这里 -->
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
