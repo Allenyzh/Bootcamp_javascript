@@ -34,7 +34,7 @@ export const useTodoStore = create(
               description: "",
             };
           }
-          return {}; // 如果输入框为空，状态不更新
+          return {};
         }),
     }),
     {
