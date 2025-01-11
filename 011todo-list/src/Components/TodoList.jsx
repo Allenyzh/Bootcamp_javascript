@@ -1,11 +1,13 @@
 import todopic from "../assets/todo.png";
 import { useTodoStore } from "../store/store.js";
+import EditPage from "./EditPage.jsx";
 
 export default function TodoList() {
   const todolist = useTodoStore((state) => state.todolist);
 
   return (
     <div className="overflow-x-auto pt-8">
+      <EditPage />
       <table className="table">
         {/* head */}
         <thead>
@@ -48,7 +50,12 @@ export default function TodoList() {
                 <span className="badge badge-ghost badge-sm">badge</span>
               </td>
               <th>
-                <button className="btn btn-ghost btn-xs text-cyan-500">
+                <button
+                  className="btn btn-ghost btn-xs text-cyan-500"
+                  onClick={() =>
+                    document.getElementById("my_modal_2").showModal()
+                  }
+                >
                   Edit
                 </button>
                 <button className="btn btn-ghost btn-xs text-red-500">

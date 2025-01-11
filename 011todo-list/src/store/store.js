@@ -12,11 +12,9 @@ export const useTodoStore = create(
         },
       ],
 
-      // 输入框
-      // 数据
+      // 增
       title: "",
       description: "",
-      // 方法
       setTitle: (title) => set(() => ({ title })),
       setDescription: (description) => set(() => ({ description })),
 
@@ -36,9 +34,38 @@ export const useTodoStore = create(
           }
           return {};
         }),
+
+      // 改
+      newTitle: "",
+      newDescription: "",
+      setNewTitle: (newTitle) => set(() => ({ newTitle })),
+      setNewDescription: (newDescription) => set(() => ({ newDescription })),
+
+      updateTodolist: (id) =>
+        set((state) => {
+          if (state.newTitle.trim() || state.newDescription.trim()) {
+            return {
+              todolist: state.todolist.map((todo) =>
+                todo.id === id
+                  ? {
+                      ...todo,
+                      title: state.newTitle.trim() || todo.title,
+                      description:
+                        state.newDescription.trim() || todo.description,
+                    }
+                  : todo
+              ),
+              newTitle: "", // 清空输入框
+              newDescription: "",
+            };
+          }
+          return {};
+        }),
     }),
     {
       name: "todolist-storage",
     }
   )
 );
+
+ 
