@@ -1,0 +1,12 @@
+POST https://generativelanguage.googleapis.com/v1beta/openai/chat/completions HTTP/1.1
+content-type: application/json
+Authorization: Bearer AIzaSyBRhgx8OTaYjfwUGemO4HY3I2RipXlzf3Y
+
+    {
+        "model": "gemini-1.5-flash",
+        "messages": [{
+                "role": "user", 
+                "content": "介绍一下梅西"
+            }],
+        "stream": true
+    }
