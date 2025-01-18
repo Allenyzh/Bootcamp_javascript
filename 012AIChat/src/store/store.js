@@ -4,6 +4,9 @@ import { persist } from 'zustand/middleware';
 export const useMessageStore = create(
   persist(
     (set, get) => ({
+      model: 'gemini-1.5-flash-8b',
+      setModel: (model) => set({ model: model }, console.log(model)),
+
       apiKey: '',
       setApi: (api) => set({ apiKey: api }),
 
@@ -31,7 +34,14 @@ export const useMessageStore = create(
       },
 
       sendMessage: async () => {
-        const { userInput, messages, setMessages, updateLastMessage, apiKey } = get();
+        const {
+          userInput,
+          messages,
+          setMessages,
+          updateLastMessage,
+          apiKey,
+          model,
+        } = get();
         if (!userInput.trim()) return;
 
         // Add user message
@@ -41,7 +51,7 @@ export const useMessageStore = create(
         setMessages({ text: '', isUser: false });
 
         const requestBody = {
-          model: 'gemini-1.5-flash',
+          model: `${model}`,
           messages: [
             ...messages.map((msg) => ({
               role: msg.isUser ? 'user' : 'assistant',
@@ -70,7 +80,7 @@ export const useMessageStore = create(
 
           if (response.ok && response.body) {
             const reader = response.body.getReader();
-            const decoder = new TextDecoder();
+            const decoder = new TextDecoder('utf-8');
 
             let assistantText = '';
 
@@ -82,12 +92,16 @@ export const useMessageStore = create(
               const lines = chunk
                 .split('\n')
                 .map((line) => line.trim())
-                .filter((line) => line);
+                .filter((line) => line !== 'data: [DONE]');
+
+              console.log(lines);
 
               for (const line of lines) {
                 if (line.startsWith('data:')) {
                   try {
                     const jsonData = JSON.parse(line.slice(5));
+                    console.log(jsonData);
+
                     const content = jsonData.choices[0]?.delta?.content || '';
 
                     if (content) {
@@ -108,11 +122,15 @@ export const useMessageStore = create(
               response.status,
               response.statusText
             );
-            updateLastMessage('Error: Unable to get a response from the server. Check Your ApiKey.');
+            updateLastMessage(
+              'Error: Unable to get a response from the server. Check Your ApiKey.'
+            );
           }
         } catch (error) {
           console.error('Error sending message:', error);
-          updateLastMessage('Error: Something went wrong while sending your message.');
+          updateLastMessage(
+            'Error: Something went wrong while sending your message.'
+          );
         }
       },
 
@@ -125,4 +143,3 @@ export const useMessageStore = create(
 );
 
 export default useMessageStore;
-
