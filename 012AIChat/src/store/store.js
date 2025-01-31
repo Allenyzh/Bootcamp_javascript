@@ -1,144 +1,100 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-// import.meta.env.VITE_API_KEY
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
 export const useMessageStore = create(
   persist(
     (set, get) => ({
-      model: 'gemini-1.5-flash-8b',
-      setModel: (model) => set({ model: model }, console.log(model)),
+      apiKey: `${import.meta.env.VITE_API_KEY}`,
+      setApiKey: (input) => set({ apiKey: input }),
 
-      apiKey: '',
-      setApi: (api) => set({ apiKey: api }),
+      userInput: '',
+      setUserInput: (newInput) => set({ userInput: newInput }),
 
-      clearApi: () => {
-        set({ apiKey: '' });
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are playing the role of the user\'s girlfriend in a conversational game. In this game, the user will try to convince you to do something you don\'t want to do. Your task is to resist while responding in a playful and in-character way, scoring each attempt using the provided JSON schema. Do not break character. \n Right now, your role is my girlfriend, and we need to play a game, the rules is: I have to convince you to do something that you don\'t want to do, and you are responding according to my response. You will give a score whether it is positive or negative for each response. List your response and the score using this JSON schema (DO NOT RETURN ANY CONTENT OUTSIDE THE JSON SCHEMA):\n\nresponse = {"response": str}\nscore = {"score": int}\nReturn: list[response, score] \n Example:[{"response":"I love you"},{"score":1}]',
+        },
+      ],
+
+      updateSystemPrompt: (newPrompt) => {
+        set((state) => (state.messages[0].content = newPrompt));
       },
 
-      messages: [],
-      userInput: '',
-      setUserInput: (input) => set({ userInput: input }),
+      setSystemPrompt: (newPrompt) =>
+        set(() => ({
+          systemPrompt: newPrompt,
+          messages: [{ role: 'system', content: newPrompt }],
+        })),
+
+      addMessage: (newMessage) => {
+        set((state) => ({
+          messages: [...state.messages, newMessage],
+        }));
+      },
+
       setMessages: (message) => {
         set((state) => ({
           messages: [...state.messages, message],
         }));
       },
 
-      updateLastMessage: (newText) => {
-        set((state) => {
-          const updatedMessages = [...state.messages];
-          if (updatedMessages.length > 0) {
-            updatedMessages[updatedMessages.length - 1].text = newText;
-          }
-          return { messages: updatedMessages };
-        });
-      },
-
       sendMessage: async () => {
-        const {
-          userInput,
-          messages,
-          setMessages,
-          updateLastMessage,
-          apiKey,
-          model,
-        } = get();
-        if (!userInput.trim()) return;
+        const { userInput, setMessages, apiKey, messages, setUserInput } =
+          get();
 
-        // Add user message
-        setMessages({ text: userInput, isUser: true });
+        if (!userInput) return;
 
-        // Add placeholder for assistant message
-        setMessages({ text: '', isUser: false });
+        await setMessages({ role: 'user', content: userInput });
+        await setUserInput('');
 
-        const requestBody = {
-          model: `${model}`,
-          messages: [
-            ...messages.map((msg) => ({
-              role: msg.isUser ? 'user' : 'assistant',
-              content: msg.text,
-            })),
-            { role: 'user', content: userInput },
-          ],
-          stream: true, // Enable streaming
-        };
+        const genAI = new GoogleGenerativeAI(`${apiKey}`);
+        const model = genAI.getGenerativeModel({
+          model: 'gemini-1.5-flash',
+        });
 
-        // Clear input
-        set({ userInput: '' });
+        const prompt = `List a few popular cookie recipes using this JSON schema:
+        
+        Recipe = {'recipeName': string}
+        Return: Array<Recipe>`;
 
-        try {
-          const response = await fetch(
-            'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-            {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json',
-                Authorization: `Bearer ${apiKey}`,
-              },
-              body: JSON.stringify(requestBody),
-            }
-          );
+        const response = await model.generateContent(prompt);
 
-          if (response.ok && response.body) {
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder('utf-8');
+        const jsonString =
+          response.response.candidates[0].content.parts[0].text;
+        console.log(jsonString);
+        const jsonString1 = jsonString.replace(/```json|```/g, '').trim();
+        const recipes = JSON.parse(jsonString1);
+        recipes.forEach((recipe, index) => {
+          console.log(`Recipe ${index + 1}: ${recipe.recipeName}`);
+        });
+        // const requestBody = {
+        //   model: `gemini-1.5-flash-8b`,
+        //   messages: [...messages, { role: 'user', content: userInput }],
+        // };
+        // console.log(JSON.stringify(requestBody, null, 2));
+        // const response = await fetch(
+        //   `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        //   {
+        //     method: 'POST',
+        //     headers: {
+        //       'content-type': 'application/json',
+        //     },
+        //     body: JSON.stringify(requestBody),
+        //   }
+        // );
+        // console.log('Response Status:', response.status, response.statusText);
+        // const data = await response.json();
+        // console.log('Response Data:', data);
+        // const messageContent = data.choices?.[0]?.message?.content;
+        // console.log(messageContent);
 
-            let assistantText = '';
-
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-
-              const chunk = decoder.decode(value, { stream: true });
-              const lines = chunk
-                .split('\n')
-                .map((line) => line.trim())
-                .filter((line) => line !== 'data: [DONE]');
-
-              console.log(lines);
-
-              for (const line of lines) {
-                if (line.startsWith('data:')) {
-                  try {
-                    const jsonData = JSON.parse(line.slice(5));
-                    console.log(jsonData);
-
-                    const content = jsonData.choices[0]?.delta?.content || '';
-
-                    if (content) {
-                      assistantText += content;
-
-                      // Update last message dynamically
-                      updateLastMessage(assistantText);
-                    }
-                  } catch (error) {
-                    console.error('Error parsing stream chunk:', error);
-                  }
-                }
-              }
-            }
-          } else {
-            console.error(
-              'Failed to fetch response:',
-              response.status,
-              response.statusText
-            );
-            updateLastMessage(
-              'Error: Unable to get a response from the server. Check Your ApiKey.'
-            );
-          }
-        } catch (error) {
-          console.error('Error sending message:', error);
-          updateLastMessage(
-            'Error: Something went wrong while sending your message.'
-          );
-        }
-      },
-
-      clearHistory: () => {
-        set({ messages: [] });
+        // console.log(messageContent[0].response);
       },
     }),
-    { name: 'ai-chat-messages' }
+    { name: 'ai-chat-messages-01' }
   )
 );
 

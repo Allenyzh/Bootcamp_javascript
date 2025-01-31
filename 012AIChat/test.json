@@ -1,0 +1,36 @@
+{
+    "response": {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "text": "```json\n[\n  {\"recipeName\": \"Chocolate Chip Cookies\"},\n  {\"recipeName\": \"Oatmeal Raisin Cookies\"},\n  {\"recipeName\": \"Peanut Butter Cookies\"},\n  {\"recipeName\": \"Sugar Cookies\"},\n  {\"recipeName\": \"Snickerdoodles\"}\n]\n```\n"
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.02964195880022916
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 32,
+            "candidatesTokenCount": 66,
+            "totalTokenCount": 98,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 31
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 66
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-flash"
+    }
+}

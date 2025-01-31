@@ -1,11 +1,9 @@
-import useMessageStore from '../store/store';
+// import useMessageStore from '../store/store';
 export default function DropDown() {
-  const geminiModel = useMessageStore((state) => state.model);
-  const setModel = useMessageStore((state) => state.setModel);
   return (
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn m-1 w-72">
-        Model: {geminiModel}
+        Model:
       </div>
       <ul
         tabIndex={0}
@@ -18,7 +16,7 @@ export default function DropDown() {
           'gemini-1.5-pro',
         ].map((model) => (
           <li key={model}>
-            <a onClick={() => setModel(model)}>{model}</a>
+            <a>{model}</a>
           </li>
         ))}
       </ul>
