@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #f0f0f0;
+    "
+  >
+    <div style="width: 500px">
+      <input
+        type="text"
+        id="guess"
+        placeholder="Enter a number between 0 and 999"
+        style="
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          width: 100%;
+          font-weight: 700;
+          font-size: 20px;
+        "
+      />
+
+      <div
+        id="error-message"
+        style="
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <span style="color: red; font-weight: 700; padding: 10px"
+          >I know you will do this =. = This is not a number!!!!!</span
+        >
+        <span>Please enter a number between 0 and 999.</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 20px">
+      <button
+        id="submit"
+        style="
+          padding: 10px;
+          border-radius: 5px;
+          width: 100%;
+          font-weight: 500;
+          font-size: 20px;
+          background-color: coral;
+        "
+        onclick="guessNumber()"
+      >
+        Submit
+      </button>
+      <button
+        id="reset"
+        style="
+          padding: 10px;
+          border-radius: 5px;
+          width: 100%;
+          font-weight: 500;
+          font-size: 20px;
+        "
+      >
+        Reset
+      </button>
+    </div>
+    <div>
+      <p id="result"></p>
+    </div>
+    <div>
+      <p id="attempts">
+        <span style="font-weight: 700">Attempts:</span>
+        <span id="attempts-count">0</span>
+      </p>
+    </div>
+    <div>
+      <p style="font-weight: 700">History:</p>
+      <ul id="history-list" style="padding-left: 20px"></ul>
+    </div>
+
+    <script>
+      const randomNumber = Math.floor(Math.random() * 1000) + 1;
+      const history = [];
+
+      function guessNumber() {
+        const inputNumber = Number(document.getElementById("guess").value);
+
+        if (isNaN(inputNumber) || inputNumber < 0 || inputNumber > 999) {
+          document.getElementById("error-message").style.display = "flex";
+          return;
+        } else {
+          document.getElementById("error-message").style.display = "none";
+        }
+
+        if (inputNumber < randomNumber) {
+          document.getElementById("result").style.color = "blue";
+          document.getElementById("result").innerText = "Too low";
+        } else if (inputNumber > randomNumber) {
+          document.getElementById("result").style.color = "red";
+          document.getElementById("result").innerText = "Too high";
+        } else {
+          document.getElementById("result").style.color = "green";
+          document.getElementById("result").innerText = "Correct!";
+        }
+
+        history.push(inputNumber);
+
+        document.getElementById("attempts-count").innerText = history.length;
+
+        const historyList = document.getElementById("history-list");
+        const listItem = document.createElement("li");
+        listItem.innerText = inputNumber;
+        if (inputNumber < randomNumber) {
+          listItem.style.color = "blue";
+        } else if (inputNumber > randomNumber) {
+          listItem.style.color = "red";
+        } else {
+          listItem.style.color = "green";
+        }
+        historyList.appendChild(listItem);
+        document.getElementById("guess").value = "";
+      }
+
+      document.getElementById("reset").addEventListener("click", () => {
+        document.getElementById("guess").value = "";
+        document.getElementById("result").innerText = "";
+        document.getElementById("attempts-count").innerText = "0";
+        document.getElementById("error-message").style.display = "none";
+        history.length = 0;
+        document.getElementById("history-list").innerHTML = "";
+      });
+    </script>
+    <script>
+      document.getElementById("guess").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          guessNumber();
+        }
+      });
+    </script>
+  </body>
+</html>
