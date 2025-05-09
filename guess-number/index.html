@@ -89,14 +89,24 @@
     </div>
 
     <script>
-      const randomNumber = Math.floor(Math.random() * 1000) + 1;
+      let randomNumber = Math.floor(Math.random() * 1000);
       const history = [];
+      let gameOver = false;
+      function emptyInput() {
+        document.getElementById("guess").value = "";
+      }
 
       function guessNumber() {
+        if (gameOver) {
+          alert("Game over! Please reset to play again.");
+          return;
+        }
+
         const inputNumber = Number(document.getElementById("guess").value);
 
         if (isNaN(inputNumber) || inputNumber < 0 || inputNumber > 999) {
           document.getElementById("error-message").style.display = "flex";
+          emptyInput();
           return;
         } else {
           document.getElementById("error-message").style.display = "none";
@@ -111,6 +121,8 @@
         } else {
           document.getElementById("result").style.color = "green";
           document.getElementById("result").innerText = "Correct!";
+          gameOver = true;
+          document.getElementById("submit").disabled = true;
         }
 
         history.push(inputNumber);
@@ -128,11 +140,14 @@
           listItem.style.color = "green";
         }
         historyList.appendChild(listItem);
-        document.getElementById("guess").value = "";
+        emptyInput();
       }
 
       document.getElementById("reset").addEventListener("click", () => {
-        document.getElementById("guess").value = "";
+        randomNumber = Math.floor(Math.random() * 1000);
+        gameOver = false;
+        document.getElementById("submit").disabled = false;
+        emptyInput();
         document.getElementById("result").innerText = "";
         document.getElementById("attempts-count").innerText = "0";
         document.getElementById("error-message").style.display = "none";
